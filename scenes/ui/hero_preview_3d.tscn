@@ -1,0 +1,97 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hero_preview_3d.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/models/character_zero.glb" id="2_hero"]
+[ext_resource type="PackedScene" path="res://assets/models/crystal_wings_detailed.glb" id="3_wings"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_pet.glb" id="4_pet"]
+[ext_resource type="PackedScene" path="res://assets/models/elven_helm.glb" id="5_helm"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_pauldrons.glb" id="6_pauldrons"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_cape.glb" id="7_cape"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_shield.glb" id="8_shield"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pedestal"]
+albedo_color = Color(0.08, 0.09, 0.12, 1)
+metallic = 0.72
+roughness = 0.35
+rim_enabled = true
+rim = 0.45
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
+material = SubResource("StandardMaterial3D_pedestal")
+top_radius = 0.78
+bottom_radius = 0.88
+height = 0.10
+
+[sub_resource type="Environment" id="Environment_preview"]
+background_mode = 1
+background_color = Color(0.03, 0.035, 0.045, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.28, 0.32, 0.42, 1)
+ambient_light_energy = 1.15
+tonemap_mode = 3
+tonemap_exposure = 1.25
+glow_enabled = true
+glow_intensity = 0.55
+
+[node name="HeroPreview3D" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_preview")
+
+[node name="HeroPivot" type="Node3D" parent="."]
+transform = Transform3D(0.975897, 0, -0.218229, 0, 1, 0, 0.218229, 0, 0.975897, 0, -0.12, 0)
+
+[node name="Pedestal" type="MeshInstance3D" parent="HeroPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("CylinderMesh_pedestal")
+
+[node name="HeroModel" parent="HeroPivot" instance=ExtResource("2_hero")]
+
+[node name="Helm" parent="HeroPivot/HeroModel" instance=ExtResource("5_helm")]
+transform = Transform3D(0.95, 0, 0, 0, 0.95, 0, 0, 0, 0.95, 0, 1.54, 0)
+visible = false
+
+[node name="Pauldrons" parent="HeroPivot/HeroModel" instance=ExtResource("6_pauldrons")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+visible = false
+
+[node name="Cape" parent="HeroPivot/HeroModel" instance=ExtResource("7_cape")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.05)
+visible = false
+
+[node name="Shield" parent="HeroPivot/HeroModel" instance=ExtResource("8_shield")]
+transform = Transform3D(0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, -0.38, 0.92, 0.12)
+visible = false
+
+[node name="Wings" parent="HeroPivot/HeroModel" instance=ExtResource("3_wings")]
+transform = Transform3D(0.92, 0, 0, 0, 0.92, 0, 0, 0, 0.92, 0, 1.25, -0.15)
+visible = false
+
+[node name="PetPivot" type="Node3D" parent="HeroPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.62, 1.38, 0.25)
+visible = false
+
+[node name="PetModel" parent="HeroPivot/PetPivot" instance=ExtResource("4_pet")]
+transform = Transform3D(0.42, 0, 0, 0, 0.42, 0, 0, 0, 0.42, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.99863, 0.052336, 0, -0.052336, 0.99863, 0, 0.82, 2.52)
+fov = 44.0
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 1.5, 3, 2)
+light_color = Color(1, 0.94, 0.86, 1)
+light_energy = 1.45
+
+[node name="RimLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1.8, -1.2)
+light_color = Color(0.25, 0.75, 1, 1)
+light_energy = 2.4
+omni_range = 5.0
+
+[node name="FillLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0.7, 1.4)
+light_color = Color(1, 0.72, 0.42, 1)
+light_energy = 1.1
+omni_range = 4.5

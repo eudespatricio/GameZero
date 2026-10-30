@@ -1,0 +1,398 @@
+[gd_scene load_steps=9 format=3 uid="uid://hud001gamezero"]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://minimap001gamezero" path="res://scenes/ui/minimap.tscn" id="2_minimap"]
+[ext_resource type="PackedScene" uid="uid://worldmap001gamezero" path="res://scenes/ui/world_map.tscn" id="3_worldmap"]
+[ext_resource type="PackedScene" uid="uid://inventorymodal001" path="res://scenes/ui/inventory_window.tscn" id="4_inventory"]
+[ext_resource type="PackedScene" uid="uid://blacksmithforge001" path="res://scenes/ui/blacksmith_forge_window.tscn" id="5_forge"]
+[ext_resource type="PackedScene" path="res://scenes/ui/patch_notes_modal.tscn" id="6_patchnotes"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp"]
+bg_color = Color(0.62, 0.09, 0.14, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.95, 0.45, 0.42, 0.55)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.85, 0.2, 0.2, 0.35)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mp"]
+bg_color = Color(0.13, 0.34, 0.72, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.68, 1, 0.55)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.2, 0.4, 0.9, 0.35)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_zonachip"]
+bg_color = Color(0.04, 0.05, 0.07, 0.82)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.64, 0.54, 0.3, 0.75)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 6
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="TopInfo" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 128.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="TopLeftHBox" type="HBoxContainer" parent="TopInfo"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 760.0
+offset_bottom = 50.0
+theme_override_constants/separation = 8
+
+[node name="CharButton" type="Button" parent="TopInfo/TopLeftHBox"]
+custom_minimum_size = Vector2(200, 38)
+layout_mode = 2
+tooltip_text = "Ficha do herói e distribuição de pontos"
+theme_override_font_sizes/font_size = 14
+text = "Zero · Nv 1 · +11"
+alignment = 0
+
+[node name="InvButton" type="Button" parent="TopInfo/TopLeftHBox"]
+custom_minimum_size = Vector2(128, 38)
+layout_mode = 2
+tooltip_text = "Abrir a mochila (I)"
+theme_override_font_sizes/font_size = 14
+text = "Mochila  [I]"
+
+[node name="FullscreenButton" type="Button" parent="TopInfo/TopLeftHBox"]
+custom_minimum_size = Vector2(128, 38)
+layout_mode = 2
+tooltip_text = "Alternar tela cheia (F11)"
+theme_override_font_sizes/font_size = 14
+text = "Tela Cheia"
+
+[node name="VersionButton" type="Button" parent="TopInfo/TopLeftHBox"]
+custom_minimum_size = Vector2(96, 38)
+layout_mode = 2
+tooltip_text = "Notas da versão"
+theme_override_font_sizes/font_size = 13
+text = "Notas"
+
+[node name="SwitchCharButton" type="Button" parent="TopInfo/TopLeftHBox"]
+custom_minimum_size = Vector2(140, 38)
+layout_mode = 2
+tooltip_text = "Voltar à seleção de personagens"
+theme_override_font_sizes/font_size = 13
+text = "Trocar Herói"
+
+[node name="EconomyLabel" type="Label" parent="TopInfo"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 56.0
+offset_right = 448.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0.93, 0.8, 0.5, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "145000 Ouro   ·   12 Bless   ·   6 Soul   ·   4 Chaos"
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="TopInfo"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -180.0
+offset_top = 54.0
+offset_right = 180.0
+offset_bottom = 88.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_zonachip")
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="TopInfo/PanelContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.96, 0.91, 1)
+theme_override_font_sizes/font_size = 14
+text = "Santuário de Sylveria · Área Segura"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NotificationLabel" type="Label" parent="TopInfo"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -230.0
+offset_top = 94.0
+offset_right = 230.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.36, 0.96, 0.82, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "Pressione [I] para abrir a Mochila"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Minimap" parent="." instance=ExtResource("2_minimap")]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -196.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 221.0
+grow_horizontal = 0
+
+[node name="NPCDialogModal" type="Panel" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -150.0
+offset_right = 280.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="NPCDialogModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = -22.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="NPCDialogModal/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.84, 0.5, 1)
+theme_override_font_sizes/font_size = 20
+text = "Ferreiro Horst"
+
+[node name="Role" type="Label" parent="NPCDialogModal/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.86, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Mestre de Forja & Refino (+15)"
+
+[node name="HSeparator" type="HSeparator" parent="NPCDialogModal/VBox"]
+layout_mode = 2
+
+[node name="Text" type="Label" parent="NPCDialogModal/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.86, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 15
+text = "Bem-vindo à forja, Cavaleiro! Deseja aprimorar sua lâmina usando suas Joias da Bênção e da Alma?"
+autowrap_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="NPCDialogModal/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="BtnRefine" type="Button" parent="NPCDialogModal/VBox/HBox"]
+custom_minimum_size = Vector2(200, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 1, 0.86, 1)
+theme_override_font_sizes/font_size = 15
+text = "Aprimorar Arma (+1)"
+
+[node name="BtnClose" type="Button" parent="NPCDialogModal/VBox/HBox"]
+custom_minimum_size = Vector2(120, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "Fechar [Esc]"
+
+[node name="BottomBar" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -148.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BottomBar"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -490.0
+offset_top = -104.0
+offset_right = 490.0
+offset_bottom = -46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PotionHPButton" type="Button" parent="BottomBar/HBoxContainer"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Poção de Vida [Q]"
+theme_override_font_sizes/font_size = 12
+text = "Q"
+
+[node name="HPContainer" type="VBoxContainer" parent="BottomBar/HBoxContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="HPBar" type="ProgressBar" parent="BottomBar/HBoxContainer/HPContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
+value = 100.0
+show_percentage = false
+
+[node name="HPLabel" type="Label" parent="BottomBar/HBoxContainer/HPContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 13
+text = "2450 / 2450"
+horizontal_alignment = 1
+
+[node name="SkillSlots" type="HBoxContainer" parent="BottomBar/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="SlotAttack" type="Button" parent="BottomBar/HBoxContainer/SkillSlots"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Combo de lâmina [F] / clique direito"
+theme_override_font_sizes/font_size = 11
+text = "F"
+
+[node name="Slot1" type="Button" parent="BottomBar/HBoxContainer/SkillSlots"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Brisingr — Chamas do Dragão [1] · 35 MP"
+theme_override_font_sizes/font_size = 11
+text = "1"
+
+[node name="Slot2" type="Button" parent="BottomBar/HBoxContainer/SkillSlots"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Jierda — Impacto Sísmico [2] · 50 MP"
+theme_override_font_sizes/font_size = 11
+text = "2"
+
+[node name="Slot3" type="Button" parent="BottomBar/HBoxContainer/SkillSlots"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Vórtice de Sylveria [3] · 75 MP"
+theme_override_font_sizes/font_size = 11
+text = "3"
+
+[node name="SlotMount" type="Button" parent="BottomBar/HBoxContainer/SkillSlots"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Montar / desmontar Saphira [Z]"
+theme_override_font_sizes/font_size = 11
+text = "Z"
+
+[node name="SlotDash" type="Button" parent="BottomBar/HBoxContainer/SkillSlots"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Esquiva rápida [Shift]"
+theme_override_font_sizes/font_size = 10
+text = "Dash"
+
+[node name="MPContainer" type="VBoxContainer" parent="BottomBar/HBoxContainer"]
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="MPBar" type="ProgressBar" parent="BottomBar/HBoxContainer/MPContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_mp")
+value = 100.0
+show_percentage = false
+
+[node name="MPLabel" type="Label" parent="BottomBar/HBoxContainer/MPContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "1180 / 1180"
+horizontal_alignment = 1
+
+[node name="PotionMPButton" type="Button" parent="BottomBar/HBoxContainer"]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+tooltip_text = "Poção de Mana [R]"
+theme_override_font_sizes/font_size = 12
+text = "R"
+
+[node name="ControlsTip" type="Label" parent="BottomBar"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -520.0
+offset_top = -24.0
+offset_right = 520.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.62, 0.69, 0.78, 1)
+theme_override_font_sizes/font_size = 12
+text = "[WASD] Mover   ·   [F / Clique] Atacar   ·   [1][2][3] Magias   ·   [Shift] Dash   ·   [Q][R] Poções   ·   [Z] Dragão   ·   [I] Mochila   ·   [M] Mapa   ·   [F11] Tela Cheia"
+horizontal_alignment = 1
+
+[node name="InventoryWindow" parent="." instance=ExtResource("4_inventory")]
+visible = false
+
+[node name="WorldMap" parent="." instance=ExtResource("3_worldmap")]
+visible = false
+
+[node name="BlacksmithForgeWindow" parent="." instance=ExtResource("5_forge")]
+visible = false
+
+[node name="PatchNotesModal" parent="." instance=ExtResource("6_patchnotes")]
+visible = false

@@ -1,0 +1,397 @@
+[gd_scene load_steps=41 format=3 uid="uid://elvenforest001mockup"]
+
+[ext_resource type="PackedScene" uid="uid://player001gamezero" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/environment/isometric_camera.gd" id="2_cam"]
+[ext_resource type="PackedScene" uid="uid://hud001gamezero" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="PackedScene" uid="uid://tree001ancient" path="res://scenes/environment/props/elven_ancient_tree.tscn" id="4_tree"]
+[ext_resource type="PackedScene" uid="uid://rockformation001" path="res://scenes/environment/props/rock_formation.tscn" id="5_rock"]
+[ext_resource type="PackedScene" uid="uid://mushrooms001" path="res://scenes/environment/props/glowing_mushrooms.tscn" id="6_shroom"]
+[ext_resource type="PackedScene" uid="uid://grasspatch001" path="res://scenes/environment/props/grass_patch.tscn" id="7_grass"]
+[ext_resource type="PackedScene" uid="uid://npcbase001gamezero" path="res://scenes/npcs/npc_base.tscn" id="8_npc"]
+[ext_resource type="PackedScene" uid="uid://enemyurgal001" path="res://scenes/enemies/enemy_mob.tscn" id="9_enemy"]
+[ext_resource type="PackedScene" uid="uid://gatheringnode001" path="res://scenes/environment/props/gathering_node.tscn" id="10_gather"]
+[ext_resource type="Shader" path="res://assets/shaders/terrain_pbr.gdshader" id="11_terrain_sh"]
+[ext_resource type="Shader" path="res://assets/shaders/water_river.gdshader" id="12_water_sh"]
+[ext_resource type="PackedScene" path="res://assets/models/wooden_bridge_detailed.glb" id="13_bridge_model"]
+[ext_resource type="PackedScene" path="res://assets/models/elven_monolith_detailed.glb" id="14_monolith_model"]
+[ext_resource type="PackedScene" path="res://assets/models/stone_brazier.glb" id="15_brazier"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_banner.glb" id="16_banner"]
+[ext_resource type="PackedScene" path="res://assets/models/treasure_chest.glb" id="17_chest"]
+[ext_resource type="Shader" path="res://assets/shaders/cobblestone_path.gdshader" id="18_cobble_sh"]
+[ext_resource type="PackedScene" path="res://assets/models/npc_herbalist.glb" id="19_angela_model"]
+[ext_resource type="PackedScene" path="res://assets/models/npc_storyteller.glb" id="20_brom_model"]
+[ext_resource type="PackedScene" path="res://assets/models/elven_central_plaza.glb" id="21_plaza_model"]
+[ext_resource type="Script" path="res://scripts/environment/fire_flicker.gd" id="22_flicker"]
+[ext_resource type="PackedScene" path="res://assets/models/elven_river_ribbon.glb" id="23_river_model"]
+[ext_resource type="Script" path="res://scripts/environment/map_builder.gd" id="30_map_builder"]
+[ext_resource type="Shader" path="res://assets/shaders/post_grade.gdshader" id="30_post_grade"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_night"]
+sky_top_color = Color(0.08, 0.16, 0.28, 1)
+sky_horizon_color = Color(0.18, 0.32, 0.40, 1)
+ground_bottom_color = Color(0.05, 0.09, 0.12, 1)
+ground_horizon_color = Color(0.12, 0.22, 0.28, 1)
+
+[sub_resource type="Sky" id="Sky_env"]
+sky_material = SubResource("ProceduralSkyMaterial_night")
+
+[sub_resource type="Environment" id="Environment_forest"]
+background_mode = 2
+sky = SubResource("Sky_env")
+ambient_light_source = 3
+ambient_light_color = Color(0.35, 0.48, 0.58, 1)
+ambient_light_energy = 0.72
+tonemap_mode = 3
+tonemap_exposure = 1.0
+ssr_enabled = false
+ssao_enabled = true
+ssao_radius = 2.2
+ssao_intensity = 1.15
+ssil_enabled = false
+sdfgi_enabled = false
+glow_enabled = true
+glow_intensity = 0.55
+glow_strength = 0.95
+glow_bloom = 0.07
+glow_hdr_threshold = 1.25
+adjustment_enabled = true
+adjustment_contrast = 1.14
+adjustment_saturation = 1.12
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0018
+volumetric_fog_albedo = Color(0.20, 0.32, 0.40, 1)
+volumetric_fog_emission = Color(0.05, 0.09, 0.13, 1)
+volumetric_fog_emission_energy = 0.30
+fog_enabled = true
+fog_light_color = Color(0.1, 0.16, 0.22, 1)
+fog_light_energy = 1.0
+fog_density = 0.0035
+fog_aerial_perspective = 0.55
+fog_sky_affect = 0.4
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grade"]
+shader = ExtResource("30_post_grade")
+shader_parameter/vignette_strength = 0.42
+shader_parameter/contrast = 1.05
+shader_parameter/saturation = 1.06
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(640, 1, 640)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ground"]
+render_priority = 0
+shader = ExtResource("11_terrain_sh")
+shader_parameter/grass_dark = Color(0.08, 0.18, 0.10, 1)
+shader_parameter/grass_light = Color(0.20, 0.38, 0.18, 1)
+shader_parameter/dirt_color = Color(0.22, 0.15, 0.10, 1)
+shader_parameter/stone_color = Color(0.28, 0.30, 0.33, 1)
+shader_parameter/uv_scale = 28.0
+shader_parameter/biome_start = 70.0
+shader_parameter/biome_full = 150.0
+shader_parameter/biome_strength = 1.0
+shader_parameter/roughness_val = 0.88
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+material = SubResource("ShaderMaterial_ground")
+size = Vector3(640, 1, 640)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_river"]
+render_priority = 0
+shader = ExtResource("12_water_sh")
+shader_parameter/water_color = Color(0.08, 0.4, 0.7, 0.85)
+shader_parameter/foam_color = Color(0.85, 0.95, 1, 1)
+shader_parameter/wave_speed = 1.4
+shader_parameter/wave_freq = 2.8
+shader_parameter/wave_height = 0.09
+
+[sub_resource type="BoxMesh" id="BoxMesh_river"]
+material = SubResource("ShaderMaterial_river")
+size = Vector3(640.0, 0.2, 8.0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cobble_south"]
+render_priority = 0
+shader = ExtResource("18_cobble_sh")
+shader_parameter/uv_scale = Vector2(16.0, 40.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cobble_path_south"]
+material = SubResource("ShaderMaterial_cobble_south")
+size = Vector3(4.0, 0.03, 10.0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cobble_north"]
+render_priority = 0
+shader = ExtResource("18_cobble_sh")
+shader_parameter/uv_scale = Vector2(16.0, 64.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cobble_path_north"]
+material = SubResource("ShaderMaterial_cobble_north")
+size = Vector3(4.0, 0.03, 16.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spores"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.3, 0.95, 0.8, 0.7)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spores"]
+emission_shape = 3
+emission_box_extents = Vector3(48, 5, 48)
+gravity = Vector3(0, 0.08, 0)
+scale_min = 0.02
+scale_max = 0.05
+
+[sub_resource type="SphereMesh" id="SphereMesh_spore_particle"]
+material = SubResource("StandardMaterial3D_spores")
+radius = 0.03
+height = 0.06
+
+[node name="ElvenForestMockup" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_forest")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819152, -0.40558, 0.40558, 0, 0.707107, 0.707107, -0.573576, -0.579228, 0.579228, 0, 18, 0)
+light_color = Color(0.78, 0.88, 1, 1)
+light_energy = 1.75
+light_volumetric_fog_energy = 1.0
+shadow_enabled = true
+shadow_bias = 0.03
+shadow_blur = 1.5
+directional_shadow_mode = 2
+directional_shadow_max_distance = 80.0
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ground")
+
+[node name="River" parent="." instance=ExtResource("23_river_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+
+[node name="SandPathSouth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 12.5)
+mesh = SubResource("BoxMesh_cobble_path_south")
+
+[node name="RiverBridge" parent="." instance=ExtResource("13_bridge_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 22)
+
+[node name="SandPathNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 34.5)
+mesh = SubResource("BoxMesh_cobble_path_north")
+
+[node name="PostFX" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="Grade" type="ColorRect" parent="PostFX"]
+material = SubResource("ShaderMaterial_grade")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MapBuilder" type="Node3D" parent="."]
+script = ExtResource("30_map_builder")
+
+[node name="Plaza" parent="." instance=ExtResource("21_plaza_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+
+[node name="Monoliths" type="Node3D" parent="."]
+
+[node name="Monolith1" parent="Monoliths" instance=ExtResource("14_monolith_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.8, 0, -5.8)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Monoliths/Monolith1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+light_color = Color(0.2, 0.92, 0.88, 1)
+light_energy = 0.8
+omni_range = 5.0
+
+[node name="Monolith2" parent="Monoliths" instance=ExtResource("14_monolith_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 0, -5.8)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Monoliths/Monolith2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+light_color = Color(0.2, 0.92, 0.88, 1)
+light_energy = 0.8
+omni_range = 5.0
+
+[node name="Monolith3" parent="Monoliths" instance=ExtResource("14_monolith_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.8, 0, 5.8)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Monoliths/Monolith3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+light_color = Color(0.2, 0.92, 0.88, 1)
+light_energy = 0.8
+omni_range = 5.0
+
+[node name="Monolith4" parent="Monoliths" instance=ExtResource("14_monolith_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 0, 5.8)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Monoliths/Monolith4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+light_color = Color(0.2, 0.92, 0.88, 1)
+light_energy = 0.8
+omni_range = 5.0
+
+[node name="PlazaProps" type="Node3D" parent="."]
+
+[node name="BrazierLeft" parent="PlazaProps" instance=ExtResource("15_brazier")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 0.08, -6.5)
+
+[node name="FireLight1" type="OmniLight3D" parent="PlazaProps/BrazierLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+light_color = Color(1, 0.6, 0.2, 1)
+light_energy = 1.6
+omni_range = 6.0
+shadow_enabled = true
+script = ExtResource("22_flicker")
+
+[node name="BrazierRight" parent="PlazaProps" instance=ExtResource("15_brazier")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0.08, -6.5)
+
+[node name="FireLight2" type="OmniLight3D" parent="PlazaProps/BrazierRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+light_color = Color(1, 0.6, 0.2, 1)
+light_energy = 1.6
+omni_range = 6.0
+shadow_enabled = true
+script = ExtResource("22_flicker")
+
+[node name="DragonBanner1" parent="PlazaProps" instance=ExtResource("16_banner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8, 0.08, 0)
+
+[node name="DragonBanner2" parent="PlazaProps" instance=ExtResource("16_banner")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 6.8, 0.08, 0)
+
+[node name="LootChest" parent="PlazaProps" instance=ExtResource("17_chest")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 6.2, 0.08, 4.5)
+
+[node name="NPCs" type="Node3D" parent="."]
+
+[node name="HorstFerreiro" parent="NPCs" instance=ExtResource("8_npc")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -4.5, 0.08, -2.5)
+
+[node name="AngelaHerborista" parent="NPCs" instance=ExtResource("8_npc")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 4.5, 0.08, -2.5)
+npc_name = "Angela, A Herborista"
+npc_role = "Poções & Profecias"
+greeting_text = "Cuidado com o que você deseja, jovem Cavaleiro! Tenho poções de vida e elixires de mana feitos das raízes mais raras de Du Weldenvarden."
+npc_color = Color(0.3, 0.9, 0.6, 1)
+custom_model = ExtResource("19_angela_model")
+npc_kind = "herbalist"
+
+[node name="BromContador" parent="NPCs" instance=ExtResource("8_npc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 6.2)
+npc_name = "Brom, O Contador"
+npc_role = "Mestre de Habilidades & História"
+greeting_text = "A magia não é um truque, rapaz. Cada palavra da Língua Antiga drena sua própria energia vital. Pressione [F] para golpear e [Tab] para trocar de herói."
+npc_color = Color(0.4, 0.7, 1, 1)
+custom_model = ExtResource("20_brom_model")
+npc_kind = "storyteller"
+
+[node name="AncientTrees" type="Node3D" parent="."]
+
+[node name="Tree1" parent="AncientTrees" instance=ExtResource("4_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -12)
+
+[node name="Tree2" parent="AncientTrees" instance=ExtResource("4_tree")]
+transform = Transform3D(0.939693, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939693, 16, 0, -14)
+
+[node name="Tree3" parent="AncientTrees" instance=ExtResource("4_tree")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -17, 0, 14)
+
+[node name="Tree4" parent="AncientTrees" instance=ExtResource("4_tree")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 15, 0, 15)
+
+[node name="RockFormations" type="Node3D" parent="."]
+
+[node name="Rock1" parent="RockFormations" instance=ExtResource("5_rock")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -5)
+
+[node name="Rock2" parent="RockFormations" instance=ExtResource("5_rock")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 11, 0, 6)
+
+[node name="Rock3" parent="RockFormations" instance=ExtResource("5_rock")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 0.9, 0, -0.5, 0, 0.866025, -8, 0, 13)
+
+[node name="Rock4" parent="RockFormations" instance=ExtResource("5_rock")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -12)
+
+[node name="BioluminescentFlora" type="Node3D" parent="."]
+
+[node name="MushroomCluster1" parent="BioluminescentFlora" instance=ExtResource("6_shroom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, -9.5)
+
+[node name="MushroomCluster2" parent="BioluminescentFlora" instance=ExtResource("6_shroom")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 0.866025, 0, -0.5, 0, 0.866025, 13.5, 0, -11)
+
+[node name="GrassField" type="Node3D" parent="."]
+
+[node name="Grass1" parent="GrassField" instance=ExtResource("7_grass")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -11, 0, -8)
+
+[node name="Grass2" parent="GrassField" instance=ExtResource("7_grass")]
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 11, 0, -8)
+
+[node name="Grass3" parent="GrassField" instance=ExtResource("7_grass")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, -8, 0, 11)
+
+[node name="Grass4" parent="GrassField" instance=ExtResource("7_grass")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 9, 0, 12)
+
+[node name="Grass5" parent="GrassField" instance=ExtResource("7_grass")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0, 18)
+
+[node name="GatheringNodes" type="Node3D" parent="."]
+
+[node name="BrightsteelNode1" parent="GatheringNodes" instance=ExtResource("10_gather")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, 8.5)
+
+[node name="BrightsteelNode2" parent="GatheringNodes" instance=ExtResource("10_gather")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 8.5, 0, -8.0)
+resource_name = "Minério de Ferro Élfico"
+
+[node name="EnemiesWildArea" type="Node3D" parent="."]
+
+[node name="UrgalScout1" parent="EnemiesWildArea" instance=ExtResource("9_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 28)
+
+[node name="UrgalScout2" parent="EnemiesWildArea" instance=ExtResource("9_enemy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 31)
+level = 10
+max_health = 620.0
+attack_damage = 80.0
+
+[node name="UrgalLeader" parent="EnemiesWildArea" instance=ExtResource("9_enemy")]
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, 0, 0, 38)
+mob_name = "Kull Titânico da Vanguarda"
+behavior = 2
+level = 15
+max_health = 1850.0
+attack_damage = 140.0
+move_speed = 6.2
+xp_reward = 850
+gold_reward = 2500
+
+[node name="MagicSpores" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+amount = 55
+lifetime = 6.0
+process_material = SubResource("ParticleProcessMaterial_spores")
+draw_pass_1 = SubResource("SphereMesh_spore_particle")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="IsometricCamera" type="Camera3D" parent="." node_paths=PackedStringArray("target_node")]
+transform = Transform3D(1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 14, 11)
+fov = 38.0
+script = ExtResource("2_cam")
+target_node = NodePath("../Player")
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]

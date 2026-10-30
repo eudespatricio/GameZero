@@ -1,0 +1,573 @@
+[gd_scene load_steps=9 format=3 uid="uid://worldmap001gamezero"]
+
+[ext_resource type="Script" path="res://scripts/ui/world_map.gd" id="1_worldmap"]
+[ext_resource type="Texture2D" path="res://assets/ui/alagaesia_cartography.png" id="2_map_tex"]
+[ext_resource type="Script" path="res://scripts/ui/region_map_canvas.gd" id="3_region_canvas"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_backdrop"]
+bg_color = Color(0.01, 0.02, 0.03, 0.88)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diablo_window"]
+bg_color = Color(0.06, 0.07, 0.09, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.44, 0.22, 0.85)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_drawer"]
+bg_color = Color(0.08, 0.09, 0.12, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.32, 0.26, 0.16, 0.65)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pin_active"]
+bg_color = Color(0.1, 0.25, 0.4, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.85, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pin_normal"]
+bg_color = Color(0.08, 0.07, 0.06, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.4, 0.2, 0.7)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_event_box"]
+bg_color = Color(0.12, 0.08, 0.08, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.25, 0.2, 0.7)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="WorldMap" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_worldmap")
+
+[node name="Backdrop" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_backdrop")
+
+[node name="Window" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -560.0
+offset_top = -320.0
+offset_right = 560.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_diablo_window")
+
+[node name="Header" type="Control" parent="Window"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="Title" type="Label" parent="Window/Header"]
+layout_mode = 1
+offset_left = 14.0
+offset_top = 8.0
+offset_right = 185.0
+offset_bottom = 32.0
+theme_override_colors/font_color = Color(0.92, 0.85, 0.65, 1)
+theme_override_font_sizes/font_size = 12
+text = "◆ MAPA DE ALAGAËSIA"
+vertical_alignment = 1
+
+[node name="TabContainer" type="HBoxContainer" parent="Window/Header"]
+layout_mode = 1
+offset_left = 190.0
+offset_top = 6.0
+offset_right = 515.0
+offset_bottom = 34.0
+theme_override_constants/separation = 6
+
+[node name="BtnViewRegion" type="Button" parent="Window/Header/TabContainer"]
+custom_minimum_size = Vector2(155, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.95, 0.85, 1)
+theme_override_font_sizes/font_size = 10
+text = "Região Sylveria"
+
+[node name="BtnViewContinent" type="Button" parent="Window/Header/TabContainer"]
+custom_minimum_size = Vector2(155, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.85, 0.55, 1)
+theme_override_font_sizes/font_size = 10
+text = "Continente Alagaësia"
+
+[node name="PlayerCoordLabel" type="Label" parent="Window/Header"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -590.0
+offset_top = -12.0
+offset_right = -45.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_font_sizes/font_size = 10
+text = "Herói: [X: 0, Z: 0] • [Clique no mapa para andar]"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Window/Header"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -14.0
+offset_right = -12.0
+offset_bottom = 14.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.85, 0.35, 0.35, 1)
+text = "✕"
+
+[node name="MainHBox" type="HBoxContainer" parent="Window"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 42.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="LeftDrawer" type="PanelContainer" parent="Window/MainHBox"]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_drawer")
+
+[node name="Margin" type="MarginContainer" parent="Window/MainHBox/LeftDrawer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="Window/MainHBox/LeftDrawer/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SearchTitle" type="Label" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.75, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "LOCALIZADOR & BUSCA"
+
+[node name="SearchInput" type="LineEdit" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+placeholder_text = "🔍 Filtrar marco ou NPC..."
+
+[node name="HSeparator1" type="HSeparator" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+
+[node name="EventsTitle" type="Label" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.45, 0.35, 1)
+theme_override_font_sizes/font_size = 11
+text = "EVENTOS MUNDIAIS (TIMERS)"
+
+[node name="EventBox" type="PanelContainer" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_event_box")
+
+[node name="EventVBox" type="VBoxContainer" parent="Window/MainHBox/LeftDrawer/Margin/VBox/EventBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Event1" type="Label" parent="Window/MainHBox/LeftDrawer/Margin/VBox/EventBox/EventVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.4, 1)
+theme_override_font_sizes/font_size = 9
+text = "🔥 Caçada Ra'zac:  14:15"
+
+[node name="Event2" type="Label" parent="Window/MainHBox/LeftDrawer/Margin/VBox/EventBox/EventVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.5, 1)
+theme_override_font_sizes/font_size = 9
+text = "⚔️ Invasão Kull:      28:40"
+
+[node name="Event3" type="Label" parent="Window/MainHBox/LeftDrawer/Margin/VBox/EventBox/EventVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.4, 0.95, 1)
+theme_override_font_sizes/font_size = 9
+text = "💀 Espectro Durza: 01:10:00"
+
+[node name="HSeparator2" type="HSeparator" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+
+[node name="FilterTitle" type="Label" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.75, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "CAMADAS DO MAPA (DIABLO IV)"
+
+[node name="CheckWaypoints" type="CheckBox" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+button_pressed = true
+text = "🔷 Portais (Waypoints)"
+
+[node name="CheckDungeons" type="CheckBox" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+button_pressed = true
+text = "🏰 Masmorras & Covis"
+
+[node name="CheckTowns" type="CheckBox" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+button_pressed = true
+text = "⚓ Cidades & Oficinas"
+
+[node name="CheckBosses" type="CheckBox" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+button_pressed = true
+text = "💀 Chefes do Mundo"
+
+[node name="Spacer" type="Control" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TipLabel" type="Label" parent="Window/MainHBox/LeftDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.52, 0.45, 1)
+theme_override_font_sizes/font_size = 9
+text = "Dica: Clique em qualquer marco do mapa para inspecionar ou teletransportar."
+autowrap_mode = 2
+
+[node name="CenterMapPanel" type="PanelContainer" parent="Window/MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_drawer")
+
+[node name="MapViewport" type="Control" parent="Window/MainHBox/CenterMapPanel"]
+layout_mode = 2
+
+[node name="ParchmentTexture" type="TextureRect" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_map_tex")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ContinentOverlay" type="Control" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="RegionMapCanvas" type="Control" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_region_canvas")
+
+[node name="PinSylveria" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 130.0
+offset_top = -140.0
+offset_right = 265.0
+offset_bottom = -105.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.3, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_active")
+text = "🔷 Santuário Sylveria\n[ Você está aqui ]"
+
+[node name="PinEllesmera" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 180.0
+offset_top = -220.0
+offset_right = 295.0
+offset_bottom = -190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "🏰 Ellesméra (Elfos)"
+
+[node name="PinCarvahall" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -200.0
+offset_right = -150.0
+offset_bottom = -165.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "🌾 Carvahall\n[ Vale Palancar ]"
+
+[node name="PinTheSpine" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -100.0
+offset_right = -140.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "💀 Covil Ra'zac\n[ A Espinha ]"
+
+[node name="PinTeirm" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -10.0
+offset_right = -185.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "⚓ Porto de Teirm"
+
+[node name="PinYazuac" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 65.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "🔥 Ruínas Yazuac\n[ Deserto Hadarac ]"
+
+[node name="PinHelgrind" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 30.0
+offset_right = -45.0
+offset_bottom = 65.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "⛰️ Helgrind\n[ Lago Leona ]"
+
+[node name="PinBeor" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.0
+offset_top = 150.0
+offset_right = 180.0
+offset_bottom = 185.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "🔷 Farthen Dûr\n[ Montanhas Beor ]"
+
+[node name="PinUrubaen" type="Button" parent="Window/MainHBox/CenterMapPanel/MapViewport"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 180.0
+offset_top = 40.0
+offset_right = 290.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_pin_normal")
+text = "👑 Urû'baen\n[ Império ]"
+
+[node name="RightDrawer" type="PanelContainer" parent="Window/MainHBox"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_drawer")
+
+[node name="Margin" type="MarginContainer" parent="Window/MainHBox/RightDrawer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="Window/MainHBox/RightDrawer/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LocationTitle" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.45, 1)
+theme_override_font_sizes/font_size = 12
+text = "Santuário de Sylveria"
+autowrap_mode = 2
+
+[node name="LocationTier" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.75, 1)
+theme_override_font_sizes/font_size = 10
+text = "Área Segura • Níveis 36 – 50"
+
+[node name="WaypointStatus" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 9
+text = "✅ Portal Ativo & Sintonizado"
+
+[node name="HSeparator" type="HSeparator" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+
+[node name="LocationDesc" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.77, 0.72, 1)
+theme_override_font_sizes/font_size = 9
+text = "A sagrada floresta dos elfos sob o dossel vivo de Du Weldenvarden. Lar do despertar dos Cavaleiros de Dragão."
+autowrap_mode = 2
+
+[node name="ThreatsTitle" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 10
+text = "AMEAÇAS & CHEFES:"
+
+[node name="ThreatsInfo" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_font_sizes/font_size = 9
+text = "💀 Chefe: Durza, O Espectro (Nvl 50)\n• Clones de sombra e forma de fumaça"
+autowrap_mode = 2
+
+[node name="DropsTitle" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 10
+text = "DROPS LENDÁRIOS:"
+
+[node name="DropsInfo" type="Label" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.95, 0.8, 1)
+theme_override_font_sizes/font_size = 9
+text = "💎 Lâmina Brisingr (+11 Glow)\n💎 Asas Élficas Nvl 2\n💎 Transfiguração em Elfo"
+autowrap_mode = 2
+
+[node name="BtnMarch" type="Button" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 10
+text = "🧭 Marchar até a Fronteira"
+
+[node name="BtnTeleport" type="Button" parent="Window/MainHBox/RightDrawer/Margin/VBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.85, 1)
+theme_override_font_sizes/font_size = 10
+text = "⚡ Teleportar para o Santuário"

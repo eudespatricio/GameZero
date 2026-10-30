@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dragonmount001"]
+
+[ext_resource type="Script" path="res://scripts/mounts/dragon_mount.gd" id="1_dragon"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_mount_saphira.glb" id="2_saphira_model"]
+
+[node name="DragonMount" type="Node3D"]
+script = ExtResource("1_dragon")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="SaphiraModel" parent="Visuals" instance=ExtResource("2_saphira_model")]
+
+[node name="BreathLight" type="OmniLight3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 3.2)
+light_color = Color(0.25, 0.85, 1, 1)
+light_energy = 1.4
+omni_range = 4.0
+
+[node name="SaddlePoint" type="Marker3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88, 0.18)

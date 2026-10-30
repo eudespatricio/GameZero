@@ -1,0 +1,39 @@
+{
+  "client_version": "0.5.0",
+  "build_number": 142,
+  "min_required_version": "0.5.0",
+  "server_protocol": 1,
+  "release_date": "2026-10-29",
+  "download_url": "https://github.com/eudespatricio/GameZero/releases",
+  "patch_notes": {
+    "version": "0.5.0",
+    "title": "A Forja dos Cavaleiros & Despertar de Umaroth",
+    "subtitle": "Infraestrutura de Rede, Multi-Personagens, Sets Épicos e Capstone de Alagaësia",
+    "highlights": [
+      "🏛️ Servidor e Contas: Sistema de contas com autenticação segura e até 4 slots de personagens.",
+      "🛡️ 21 Sets de Armadura: 5 Tiers progressivos por classe (Tiers 1 a 5) + Set Lendário e Divino.",
+      "💎 Atributos Aleatórios: Equipamentos agora rolam de 1 a 4 affixes específicos por classe.",
+      "🦅 Dragões e Pets: Progressão em 5 faixas de nível para montarias aladas e companheiros.",
+      "🪽 Asas dos Cavaleiros: Requisitos de nível 30 (Nv 1), 40 (Nv 2) e 50 (Nv 3 / Supremas).",
+      "🐉 Ritual do Dragão Mais Sábio: Ao atingir o Level Cap 50, Umaroth desperta bônus míticos para a classe."
+    ],
+    "changes": [
+      {
+        "category": "Arquitetura & Rede",
+        "items": [
+          "Autoload VersionManager com checagem de integridade de versão no handshake inicial.",
+          "Autoload NetworkManager com suporte híbrido (Online via Servidor REST ou Offline Seguro).",
+          "Autoload SaveManager para serialização de slots de personagens e itens instanciados."
+        ]
+      },
+      {
+        "category": "Classes & Atributos",
+        "items": [
+          "Zero (Cavaleiro de Dragão): Especialização em Força/Vontade e magia de fogo arcana.",
+          "Arya (Guardiã Élfica): Especialização em Destreza/Vontade, alta velocidade e crítico perfurante.",
+          "Roran (Martelo-Forte): Especialização em Força/Vitalidade, escudo de torre e resiliência pura."
+        ]
+      }
+    ]
+  }
+}

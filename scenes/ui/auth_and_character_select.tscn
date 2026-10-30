@@ -1,0 +1,602 @@
+[gd_scene format=3 uid="uid://c5q3yan7y8w1p"]
+
+[ext_resource type="Script" path="res://scripts/ui/auth_and_character_select.gd" id="1_auth"]
+[ext_resource type="PackedScene" path="res://scenes/ui/patch_notes_modal.tscn" id="2_notes"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.04, 0.05, 0.07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_topbar"]
+bg_color = Color(0.02, 0.03, 0.04, 0.95)
+border_width_bottom = 2
+border_color = Color(0.45, 0.35, 0.18, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_card"]
+bg_color = Color(0.07, 0.08, 0.11, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.3, 0.2, 0.7)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_active_border"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.8, 0.35, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_gold"]
+bg_color = Color(0.2, 0.16, 0.08, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.85, 0.7, 0.3, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color = Color(0.1, 0.12, 0.16, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.35, 0.42, 0.7)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="AuthAndCharacterSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_auth")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_topbar")
+
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Logo" type="Label" parent="TopBar/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "  ⚔️ GAMEZERO BETA"
+
+[node name="ServerStatus" type="Label" parent="TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.4, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 12
+text = "🟢 Conectando ao servidor..."
+vertical_alignment = 1
+
+[node name="VersionButton" type="Button" parent="TopBar"]
+custom_minimum_size = Vector2(130, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+text = "📜 v0.5.0 Notas"
+
+[node name="AccountLabel" type="Label" parent="TopBar"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "Não conectado   "
+vertical_alignment = 1
+
+[node name="LogoutButton" type="Button" parent="TopBar"]
+visible = false
+custom_minimum_size = Vector2(80, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+text = "Sair"
+
+[node name="AuthPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(400, 320)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -160.0
+offset_right = 200.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="VBox" type="VBoxContainer" parent="AuthPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="AuthPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 16
+text = "ENTRAR EM ALAGAËSIA"
+horizontal_alignment = 1
+
+[node name="UserInput" type="LineEdit" parent="AuthPanel/VBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+placeholder_text = "Nome de Usuário"
+
+[node name="PassInput" type="LineEdit" parent="AuthPanel/VBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+placeholder_text = "Senha da Conta"
+secret = true
+
+[node name="ErrorLabel" type="Label" parent="AuthPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 11
+autowrap_mode = 2
+
+[node name="SubmitButton" type="Button" parent="AuthPanel/VBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "⚔️ Entrar"
+
+[node name="ToggleModeButton" type="Button" parent="AuthPanel/VBox"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+text = "Não tem conta? ➔ Cadastre-se"
+
+[node name="OfflineGuestButton" type="Button" parent="AuthPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+text = "🛡️ Jogar em Modo Local / Convidado"
+
+[node name="CharSelectPanel" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = 80.0
+offset_right = -60.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+
+[node name="HeaderTitle" type="Label" parent="CharSelectPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 20
+text = "SELECIONE SEU PERSONAGEM"
+horizontal_alignment = 1
+
+[node name="SlotsContainer" type="HBoxContainer" parent="CharSelectPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="SlotCard_0" type="PanelContainer" parent="CharSelectPanel/SlotsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="ActiveBorder" type="Panel" parent="CharSelectPanel/SlotsContainer/SlotCard_0"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_active_border")
+
+[node name="InfoBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_0"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="AvatarIcon" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_0/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 48
+text = "🐉"
+horizontal_alignment = 1
+
+[node name="CharName" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_0/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.9, 0.8, 1)
+theme_override_font_sizes/font_size = 18
+text = "ZeroHero"
+horizontal_alignment = 1
+
+[node name="CharClass" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_0/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "Cavaleiro de Dragão"
+horizontal_alignment = 1
+
+[node name="CharLevel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_0/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.75, 0.7, 0.6, 1)
+theme_override_font_sizes/font_size = 12
+text = "Nível 15"
+horizontal_alignment = 1
+
+[node name="EmptyBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_0"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="EmptyLabel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_0/EmptyBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+text = "Slot Vazio"
+horizontal_alignment = 1
+
+[node name="CreateButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_0/EmptyBox"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "+ Criar"
+
+[node name="SelectButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_0"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+
+[node name="SlotCard_1" type="PanelContainer" parent="CharSelectPanel/SlotsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="ActiveBorder" type="Panel" parent="CharSelectPanel/SlotsContainer/SlotCard_1"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_active_border")
+
+[node name="InfoBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_1"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="AvatarIcon" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_1/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 48
+text = "🧝"
+horizontal_alignment = 1
+
+[node name="CharName" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_1/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+text = "Arya"
+horizontal_alignment = 1
+
+[node name="CharClass" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_1/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.4, 1, 0.6, 1)
+text = "Guardiã de Ellesméra"
+horizontal_alignment = 1
+
+[node name="CharLevel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_1/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+text = "Nível 1"
+horizontal_alignment = 1
+
+[node name="EmptyBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_1"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="EmptyLabel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_1/EmptyBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+text = "Slot Vazio"
+horizontal_alignment = 1
+
+[node name="CreateButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_1/EmptyBox"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "+ Criar"
+
+[node name="SelectButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_1"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+
+[node name="SlotCard_2" type="PanelContainer" parent="CharSelectPanel/SlotsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="ActiveBorder" type="Panel" parent="CharSelectPanel/SlotsContainer/SlotCard_2"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_active_border")
+
+[node name="InfoBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_2"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="AvatarIcon" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_2/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 48
+text = "🔨"
+horizontal_alignment = 1
+
+[node name="CharName" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_2/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+text = "Roran"
+horizontal_alignment = 1
+
+[node name="CharClass" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_2/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.3, 1)
+text = "Martelo-Forte"
+horizontal_alignment = 1
+
+[node name="CharLevel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_2/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+text = "Nível 1"
+horizontal_alignment = 1
+
+[node name="EmptyBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_2"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="EmptyLabel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_2/EmptyBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+text = "Slot Vazio"
+horizontal_alignment = 1
+
+[node name="CreateButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_2/EmptyBox"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "+ Criar"
+
+[node name="SelectButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_2"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+
+[node name="SlotCard_3" type="PanelContainer" parent="CharSelectPanel/SlotsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="ActiveBorder" type="Panel" parent="CharSelectPanel/SlotsContainer/SlotCard_3"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_active_border")
+
+[node name="InfoBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_3"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="AvatarIcon" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_3/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 48
+text = "🐉"
+horizontal_alignment = 1
+
+[node name="CharName" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_3/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+text = "Zero"
+horizontal_alignment = 1
+
+[node name="CharClass" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_3/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+text = "Cavaleiro"
+horizontal_alignment = 1
+
+[node name="CharLevel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_3/InfoBox"]
+layout_mode = 2
+mouse_filter = 2
+text = "Nível 1"
+horizontal_alignment = 1
+
+[node name="EmptyBox" type="VBoxContainer" parent="CharSelectPanel/SlotsContainer/SlotCard_3"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="EmptyLabel" type="Label" parent="CharSelectPanel/SlotsContainer/SlotCard_3/EmptyBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+text = "Slot Vazio"
+horizontal_alignment = 1
+
+[node name="CreateButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_3/EmptyBox"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "+ Criar"
+
+[node name="SelectButton" type="Button" parent="CharSelectPanel/SlotsContainer/SlotCard_3"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+focus_mode = 0
+flat = true
+
+[node name="Footer" type="HBoxContainer" parent="CharSelectPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="EnterWorldButton" type="Button" parent="CharSelectPanel/Footer"]
+custom_minimum_size = Vector2(360, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "⚔️ ENTRAR NO MUNDO DE ALAGAËSIA"
+
+[node name="CreateCharModal" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(440, 360)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -180.0
+offset_right = 220.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="VBox" type="VBoxContainer" parent="CreateCharModal"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="CreateCharModal/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 16
+text = "FORJAR NOVO HERÓI"
+horizontal_alignment = 1
+
+[node name="Classes" type="HBoxContainer" parent="CreateCharModal/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ZeroBtn" type="Button" parent="CreateCharModal/VBox/Classes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+toggle_mode = true
+text = "🐉 Zero\n(Cavaleiro)"
+
+[node name="AryaBtn" type="Button" parent="CreateCharModal/VBox/Classes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+toggle_mode = true
+text = "🧝 Arya\n(Guardiã)"
+
+[node name="RoranBtn" type="Button" parent="CreateCharModal/VBox/Classes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+toggle_mode = true
+text = "🔨 Roran\n(Berserker)"
+
+[node name="NameInput" type="LineEdit" parent="CreateCharModal/VBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+placeholder_text = "Nome do Personagem (2 - 16 letras)"
+
+[node name="ErrorLabel" type="Label" parent="CreateCharModal/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.35, 1)
+theme_override_font_sizes/font_size = 11
+
+[node name="Actions" type="HBoxContainer" parent="CreateCharModal/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CancelCreate" type="Button" parent="CreateCharModal/VBox/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+text = "Cancelar"
+
+[node name="ConfirmCreate" type="Button" parent="CreateCharModal/VBox/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_gold")
+text = "⚔️ Confirmar"
+
+[node name="PatchNotesModal" parent="." instance=ExtResource("2_notes")]
+visible = false
+layout_mode = 1

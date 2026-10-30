@@ -1,0 +1,79 @@
+[gd_scene load_steps=11 format=3 uid="uid://player001gamezero"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://dragonmount001" path="res://scenes/mounts/dragon_mount.tscn" id="2_dragon"]
+[ext_resource type="PackedScene" path="res://assets/models/character_zero.glb" id="3_zero_model"]
+[ext_resource type="PackedScene" path="res://assets/models/crystal_wings_detailed.glb" id="4_wings_model"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_pet.glb" id="5_pet_model"]
+[ext_resource type="PackedScene" path="res://assets/models/elven_helm.glb" id="6_helm_model"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_pauldrons.glb" id="7_pauldrons_model"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_cape.glb" id="8_cape_model"]
+[ext_resource type="PackedScene" path="res://assets/models/dragon_shield.glb" id="9_shield_model"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.45
+height = 1.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_marker"]
+shading_mode = 0
+albedo_color = Color(0.2, 0.9, 0.8, 0.8)
+
+[sub_resource type="TorusMesh" id="TorusMesh_marker"]
+material = SubResource("StandardMaterial3D_marker")
+inner_radius = 0.35
+outer_radius = 0.45
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="HeroBody" parent="Visuals" instance=ExtResource("3_zero_model")]
+
+[node name="Helm" parent="Visuals/HeroBody" instance=ExtResource("6_helm_model")]
+transform = Transform3D(0.95, 0, 0, 0, 0.95, 0, 0, 0, 0.95, 0, 1.54, 0)
+visible = false
+
+[node name="Pauldrons" parent="Visuals/HeroBody" instance=ExtResource("7_pauldrons_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+visible = false
+
+[node name="Cape" parent="Visuals/HeroBody" instance=ExtResource("8_cape_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -0.05)
+visible = false
+
+[node name="Shield" parent="Visuals/HeroBody" instance=ExtResource("9_shield_model")]
+transform = Transform3D(0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, -0.38, 0.92, 0.12)
+visible = false
+
+[node name="Wings" parent="Visuals/HeroBody" instance=ExtResource("4_wings_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, -0.15)
+visible = false
+
+[node name="GedweyLight" type="OmniLight3D" parent="Visuals/HeroBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36, 0.88, 0.35)
+light_color = Color(0.35, 0.82, 1, 1)
+light_energy = 1.0
+omni_range = 3.5
+
+[node name="AuraLight" type="OmniLight3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+light_color = Color(0.65, 0.85, 1.0, 1)
+light_energy = 0.85
+omni_range = 6.5
+
+[node name="DragonPet" parent="Visuals" instance=ExtResource("5_pet_model")]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -0.75, 1.35, 0.35)
+visible = false
+
+[node name="DragonMount" parent="Visuals" instance=ExtResource("2_dragon")]
+
+[node name="ClickMarker" type="Node3D" parent="."]
+
+[node name="MarkerMesh" type="MeshInstance3D" parent="ClickMarker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("TorusMesh_marker")

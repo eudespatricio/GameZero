@@ -1,0 +1,593 @@
+[gd_scene format=3 uid="uid://mx4hb0i6unwy"]
+
+[ext_resource type="Script" path="res://scripts/ui/inventory_window.gd" id="1_inv"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hero_preview_3d.tscn" id="2_prev"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_backdrop"]
+bg_color = Color(0.01, 0.02, 0.03, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diablo_window"]
+bg_color = Color(0.06, 0.07, 0.09, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.4, 0.22, 0.85)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diablo_panel"]
+bg_color = Color(0.09, 0.1, 0.13, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.32, 0.27, 0.18, 0.7)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_diablo_slot"]
+bg_color = Color(0.05, 0.06, 0.08, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.3, 0.2, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+bg_color = Color(0.1, 0.22, 0.38, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.55, 0.85, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="InventoryWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_inv")
+
+[node name="Backdrop" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_backdrop")
+
+[node name="Window" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -525.0
+offset_top = -305.0
+offset_right = 525.0
+offset_bottom = 305.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_diablo_window")
+
+[node name="Header" type="Control" parent="Window"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+
+[node name="LevelBadge" type="PanelContainer" parent="Window/Header"]
+layout_mode = 1
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 52.0
+offset_bottom = 30.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_badge")
+
+[node name="BadgeText" type="Label" parent="Window/Header/LevelBadge"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.88, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "15"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeroName" type="Label" parent="Window/Header"]
+layout_mode = 1
+offset_left = 58.0
+offset_top = 4.0
+offset_right = 260.0
+offset_bottom = 22.0
+theme_override_colors/font_color = Color(0.92, 0.88, 0.8, 1)
+theme_override_font_sizes/font_size = 12
+text = "ZERO (Cavaleiro de Dragão)"
+vertical_alignment = 1
+
+[node name="HeroTitle" type="Label" parent="Window/Header"]
+layout_mode = 1
+offset_left = 58.0
+offset_top = 19.0
+offset_right = 260.0
+offset_bottom = 33.0
+theme_override_colors/font_color = Color(0.6, 0.55, 0.45, 1)
+theme_override_font_sizes/font_size = 9
+text = "< O Guardião de Sylveria >"
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Window/Header"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -14.0
+offset_right = -10.0
+offset_bottom = 14.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.85, 0.3, 0.3, 1)
+text = "✕"
+
+[node name="MainVBox" type="VBoxContainer" parent="Window"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 38.0
+offset_right = -10.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="UpperHBox" type="HBoxContainer" parent="Window/MainVBox"]
+custom_minimum_size = Vector2(0, 310)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="StatsPanel" type="PanelContainer" parent="Window/MainVBox/UpperHBox"]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_diablo_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Window/MainVBox/UpperHBox/StatsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Margin" type="MarginContainer" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxInternal" type="VBoxContainer" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="StatsHeader" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.75, 0.5, 1)
+theme_override_font_sizes/font_size = 11
+text = "ATRIBUTOS DO CAVALEIRO"
+horizontal_alignment = 1
+
+[node name="HSeparator1" type="HSeparator" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+
+[node name="AttackLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.85, 0.8, 1)
+theme_override_font_sizes/font_size = 11
+text = "⚔️ Poder de Ataque:  1,961"
+
+[node name="ArmorLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.85, 0.8, 1)
+theme_override_font_sizes/font_size = 11
+text = "🛡️ Armadura / Defesa:  2,195"
+
+[node name="LifeLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.35, 0.4, 1)
+theme_override_font_sizes/font_size = 11
+text = "❤️ Vida (HP):  2,450 / 2,450"
+
+[node name="ManaLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.7, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "🔮 Mana (MP):  1,180 / 1,180"
+
+[node name="CombatPowerLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 11
+text = "⚡ Poder Total (CP):  20,217"
+
+[node name="HSeparator2" type="HSeparator" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+
+[node name="StrengthLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.72, 0.65, 1)
+theme_override_font_sizes/font_size = 10
+text = "Força (Strength):       28"
+
+[node name="DexterityLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.72, 0.65, 1)
+theme_override_font_sizes/font_size = 10
+text = "Destreza (Dexterity):   22"
+
+[node name="VitalityLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.72, 0.65, 1)
+theme_override_font_sizes/font_size = 10
+text = "Vitalidade (Vitality):  25"
+
+[node name="WillpowerLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.72, 0.65, 1)
+theme_override_font_sizes/font_size = 10
+text = "Vontade (Willpower):   24"
+
+[node name="SetBonusLabel" type="Label" parent="Window/MainVBox/UpperHBox/StatsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.95, 0.6, 1)
+theme_override_font_sizes/font_size = 10
+text = "🌟 Set Cavaleiro: 5/5 (+25% Dano)"
+autowrap_mode = 2
+
+[node name="PaperdollPanel" type="PanelContainer" parent="Window/MainVBox/UpperHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_diablo_panel")
+
+[node name="HBox" type="HBoxContainer" parent="Window/MainVBox/UpperHBox/PaperdollPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="LeftSlots" type="VBoxContainer" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox"]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="SlotHead" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/LeftSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Elmo —"
+
+[node name="SlotChest" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/LeftSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Peitoral —"
+
+[node name="SlotGloves" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/LeftSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Manoplas —"
+
+[node name="SlotPants" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/LeftSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Perneiras —"
+
+[node name="SlotBoots" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/LeftSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Grevas —"
+
+[node name="CenterHeroView" type="VBoxContainer" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox"]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="TopPrestigeHBox" type="HBoxContainer" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="SlotCape" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/TopPrestigeHBox"]
+custom_minimum_size = Vector2(90, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Capa —"
+
+[node name="SlotWings" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/TopPrestigeHBox"]
+custom_minimum_size = Vector2(90, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Asas —"
+
+[node name="HeroSilhouette" type="Panel" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView"]
+custom_minimum_size = Vector2(220, 195)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_diablo_slot")
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/HeroSilhouette"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/HeroSilhouette/ViewportContainer"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(330, 292)
+render_target_update_mode = 0
+
+[node name="HeroPreview3D" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/HeroSilhouette/ViewportContainer/SubViewport" instance=ExtResource("2_prev")]
+
+[node name="HintLabel" type="Label" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/HeroSilhouette"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.7, 0.85, 0.6)
+theme_override_font_sizes/font_size = 8
+text = "Arraste para inspecionar em 360°"
+horizontal_alignment = 1
+
+[node name="BottomWeaponsHBox" type="HBoxContainer" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="SlotWeaponMain" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/BottomWeaponsHBox"]
+custom_minimum_size = Vector2(105, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "Brisingr (+11)"
+
+[node name="SlotWeaponOff" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/CenterHeroView/BottomWeaponsHBox"]
+custom_minimum_size = Vector2(105, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Escudo —"
+
+[node name="RightSlots" type="VBoxContainer" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox"]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="SlotAmulet" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/RightSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Amuleto —"
+
+[node name="SlotRing1" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/RightSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Anel I —"
+
+[node name="SlotRing2" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/RightSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Anel II —"
+
+[node name="SlotPet" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/RightSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Pet —"
+
+[node name="SlotMount" type="Button" parent="Window/MainVBox/UpperHBox/PaperdollPanel/HBox/RightSlots"]
+custom_minimum_size = Vector2(85, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+theme_override_styles/normal = SubResource("StyleBoxFlat_diablo_slot")
+text = "— Montaria —"
+
+[node name="DetailsPanel" type="PanelContainer" parent="Window/MainVBox/UpperHBox"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_diablo_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Window/MainVBox/UpperHBox/DetailsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Margin" type="MarginContainer" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxInternal" type="VBoxContainer" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ItemTitle" type="Label" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 12
+text = "Brisingr (Lâmina de Fogo)"
+autowrap_mode = 2
+
+[node name="ItemTypeRarity" type="Label" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 10
+text = "Raridade: Mítico (+11)"
+
+[node name="HSeparator" type="HSeparator" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+
+[node name="ItemStats" type="Label" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.85, 1)
+theme_override_font_sizes/font_size = 10
+text = "⚔️ Dano Base: 380\n✨ Efeito Especial: +35% Fogo"
+
+[node name="ItemDesc" type="Label" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox/Margin/VBoxInternal"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.78, 0.75, 0.7, 1)
+theme_override_font_sizes/font_size = 9
+text = "Forjada por Rhunön com Brightsteel azul estelar. Inflama-se com o pronunciar de seu nome."
+autowrap_mode = 2
+
+[node name="BtnEquipToggle" type="Button" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Equipar / Desequipar"
+
+[node name="BtnAction" type="Button" parent="Window/MainVBox/UpperHBox/DetailsPanel/VBox"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.8, 1)
+theme_override_font_sizes/font_size = 10
+text = "⚡ Aprimorar (+1)"
+
+[node name="BackpackSection" type="PanelContainer" parent="Window/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_diablo_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Window/MainVBox/BackpackSection"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TabBarHeader" type="HBoxContainer" parent="Window/MainVBox/BackpackSection/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CategoryLabel" type="Label" parent="Window/MainVBox/BackpackSection/VBox/TabBarHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.75, 0.45, 1)
+theme_override_font_sizes/font_size = 11
+text = "  🎒 MOCHILA (33 SLOTS)"
+vertical_alignment = 1
+
+[node name="TabsHBox" type="HBoxContainer" parent="Window/MainVBox/BackpackSection/VBox/TabBarHeader"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TabAll" type="Button" parent="Window/MainVBox/BackpackSection/VBox/TabBarHeader/TabsHBox"]
+custom_minimum_size = Vector2(65, 24)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "📦 Todos"
+
+[node name="TabEquip" type="Button" parent="Window/MainVBox/BackpackSection/VBox/TabBarHeader/TabsHBox"]
+custom_minimum_size = Vector2(75, 24)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "⚔️ Equipar"
+
+[node name="TabJewels" type="Button" parent="Window/MainVBox/BackpackSection/VBox/TabBarHeader/TabsHBox"]
+custom_minimum_size = Vector2(75, 24)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "💎 Joias"
+
+[node name="TabPotions" type="Button" parent="Window/MainVBox/BackpackSection/VBox/TabBarHeader/TabsHBox"]
+custom_minimum_size = Vector2(75, 24)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "🧪 Poções"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Window/MainVBox/BackpackSection/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Margin" type="MarginContainer" parent="Window/MainVBox/BackpackSection/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="GridContainer" type="GridContainer" parent="Window/MainVBox/BackpackSection/VBox/ScrollContainer/Margin"]
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 11
+
+[node name="CurrencyFooter" type="HBoxContainer" parent="Window/MainVBox/BackpackSection/VBox"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="GoldLabel" type="Label" parent="Window/MainVBox/BackpackSection/VBox/CurrencyFooter"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 10
+text = "  💰 145,000 Ouro"
+vertical_alignment = 1
+
+[node name="JewelsLabel" type="Label" parent="Window/MainVBox/BackpackSection/VBox/CurrencyFooter"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "💎 Bless: 12   🔮 Soul: 6   🔥 Chaos: 4"
+vertical_alignment = 1
+
+[node name="ObolsLabel" type="Label" parent="Window/MainVBox/BackpackSection/VBox/CurrencyFooter"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.5, 0.95, 1)
+theme_override_font_sizes/font_size = 10
+text = "🟣 Platina: 60  "
+vertical_alignment = 1

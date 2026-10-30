@@ -1,0 +1,39 @@
+# Godot 4+ cache and build artifacts
+.godot/
+.import/
+
+# Binários de exportação (grandes demais para o Git; gere com export_presets.cfg)
+GameZero.exe
+GameZero.console.exe
+*.pck
+builds/
+*.zip
+
+# Imported translations
+*.translation
+
+# Mono / C#
+.mono/
+mono_crash.*.json
+
+# Credenciais de exportação (os presets em si DEVEM ser versionados,
+# para que o build seja reproduzível em outra máquina)
+.godot/export_credentials.cfg
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.db
+*.sqlite3
+
+# Áudio: originais preservados pela masterização (regeneráveis)
+assets/audio/sfx_raw/
+
+# Arquivos temporários de gravação de save/edits
+*.tmp
+
+# OS metadata
+.DS_Store
+Thumbs.db

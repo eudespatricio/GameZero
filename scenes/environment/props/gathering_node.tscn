@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://2dqvr0ut04wi"]
+
+[ext_resource type="Script" path="res://scripts/environment/gathering_node.gd" id="1_node"]
+[ext_resource type="PackedScene" path="res://assets/models/brightsteel_ore_detailed.glb" id="2_oremodel"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_detect"]
+height = 2.5
+radius = 2.8
+
+[node name="GatheringNode" type="Node3D"]
+script = ExtResource("1_node")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="Crystals" type="Node3D" parent="Visuals"]
+
+[node name="Model" parent="Visuals/Crystals" instance=ExtResource("2_oremodel")]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Visuals/Crystals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+light_color = Color(0.2, 0.85, 1, 1)
+light_energy = 0.8
+omni_range = 3.5
+
+[node name="PromptLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+billboard = 1
+modulate = Color(0.3, 0.95, 0.85, 1)
+font_size = 22
+outline_size = 4
+text = "[E] Coletar Brightsteel"
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("CylinderShape3D_detect")

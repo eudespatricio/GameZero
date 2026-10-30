@@ -1,0 +1,200 @@
+[gd_scene format=3 uid="uid://bflmg17dlab0k"]
+
+[ext_resource type="Script" path="res://scripts/ui/blacksmith_forge_window.gd" id="1_forge"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_forge_bg"]
+bg_color = Color(0.05, 0.06, 0.09, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.58, 0.28, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.75)
+shadow_size = 12
+
+[node name="BlacksmithForgeWindow" type="Panel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -250.0
+offset_right = 380.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_forge_bg")
+script = ExtResource("1_forge")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 17
+text = "⚒️ FORJA DE COMBINAÇÕES DE HORST (CHAOS MACHINE)"
+
+[node name="CloseButton" type="Button" parent="VBox/Header"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
+text = "✕"
+
+[node name="HSeparator" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="Body" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LeftPanel" type="VBoxContainer" parent="VBox/Body"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Categories" type="HBoxContainer" parent="VBox/Body/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BtnAll" type="Button" parent="VBox/Body/LeftPanel/Categories"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "Todas"
+
+[node name="BtnWings" type="Button" parent="VBox/Body/LeftPanel/Categories"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "Asas"
+
+[node name="BtnWeapons" type="Button" parent="VBox/Body/LeftPanel/Categories"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "Armas"
+
+[node name="BtnJewels" type="Button" parent="VBox/Body/LeftPanel/Categories"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "Joias"
+
+[node name="BtnAlchemy" type="Button" parent="VBox/Body/LeftPanel/Categories"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "Alquim."
+
+[node name="Scroll" type="ScrollContainer" parent="VBox/Body/LeftPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RecipeList" type="VBoxContainer" parent="VBox/Body/LeftPanel/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="VSeparator" type="VSeparator" parent="VBox/Body"]
+layout_mode = 2
+
+[node name="RightPanel" type="VBoxContainer" parent="VBox/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="ResultBox" type="HBoxContainer" parent="VBox/Body/RightPanel"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="VBox/Body/RightPanel/ResultBox"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Info" type="VBoxContainer" parent="VBox/Body/RightPanel/ResultBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Name" type="Label" parent="VBox/Body/RightPanel/ResultBox/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_font_sizes/font_size = 15
+text = "Nome do Item"
+
+[node name="Type" type="Label" parent="VBox/Body/RightPanel/ResultBox/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.85, 1)
+theme_override_font_sizes/font_size = 11
+text = "< Categoria >"
+
+[node name="Desc" type="Label" parent="VBox/Body/RightPanel/ResultBox/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 11
+autowrap_mode = 2
+
+[node name="IngredientsBox" type="VBoxContainer" parent="VBox/Body/RightPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="HeaderIng" type="Label" parent="VBox/Body/RightPanel/IngredientsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.8, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "🔮 Ingredientes & Catalisadores Requeridos:"
+
+[node name="List" type="VBoxContainer" parent="VBox/Body/RightPanel/IngredientsBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Footer" type="VBoxContainer" parent="VBox/Body/RightPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SuccessLabel" type="Label" parent="VBox/Body/RightPanel/Footer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "⚡ Taxa de Sucesso: 85%"
+
+[node name="CostLabel" type="Label" parent="VBox/Body/RightPanel/Footer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "💰 Custo: 25000 Ouro"
+
+[node name="CraftButton" type="Button" parent="VBox/Body/RightPanel/Footer"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_font_sizes/font_size = 14
+text = "🔥 FORJAR ITEM"
+
+[node name="StatusFeedback" type="Label" parent="VBox/Body/RightPanel/Footer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1

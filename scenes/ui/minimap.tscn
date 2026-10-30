@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://drkhd14pfi7jg"]
+
+[ext_resource type="Script" path="res://scripts/ui/minimap.gd" id="1_minimap"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mini_panel"]
+bg_color = Color(0.04, 0.07, 0.1, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.65, 0.6, 0.7)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="Minimap" type="Control"]
+custom_minimum_size = Vector2(170, 205)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 170.0
+offset_bottom = 205.0
+script = ExtResource("1_minimap")
+
+[node name="BackgroundPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mini_panel")
+
+[node name="Header" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 24.0
+grow_horizontal = 2
+
+[node name="CoordsLabel" type="Label" parent="Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.65, 0.9, 0.85, 0.9)
+theme_override_font_sizes/font_size = 11
+text = "X: 0 | Z: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MapButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -28.0
+offset_right = -15.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.3, 0.9, 0.85, 1)
+theme_override_font_sizes/font_size = 11
+text = "🗺️ Mapa [M]"

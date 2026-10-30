@@ -1,0 +1,61 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
+[application]
+
+config/name="GameZero"
+run/main_scene="res://scenes/ui/auth_and_character_select.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+VersionManager="*res://scripts/systems/version_manager.gd"
+SaveManager="*res://scripts/systems/save_manager.gd"
+NetworkManager="*res://scripts/network/network_manager.gd"
+AudioManager="*res://scripts/systems/audio_manager.gd"
+GameInput="*res://scripts/systems/game_input.gd"
+UIStyle="*res://scripts/ui/ui_style.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[gui]
+
+theme/custom="res://assets/ui/ui_theme.tres"
+
+[rendering]
+
+textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/screen_space_aa=1
+environment/defaults/default_clear_color=Color(0.031, 0.043, 0.06, 1)
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=3
+lights_and_shadows/positional_shadow/soft_shadow_filter_quality=3
+
+[shader_globals]
+
+player_world_pos={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}
+camera_world_pos={
+"type": "vec3",
+"value": Vector3(0, 14, 11)
+}

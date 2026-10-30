@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvuw7ndkra5aa"]
+
+[ext_resource type="PackedScene" path="res://assets/models/elven_fern_patch.glb" id="1_fern_model"]
+
+[node name="GrassPatch" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_fern_model")]

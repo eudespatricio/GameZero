@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://mushrooms001"]
+
+[ext_resource type="PackedScene" path="res://assets/models/elven_mushrooms_cluster.glb" id="1_shroom_model"]
+
+[node name="GlowingMushrooms" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_shroom_model")]
+
+[node name="MushroomLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+light_color = Color(0.2, 0.88, 0.95, 1)
+light_energy = 0.8
+omni_range = 3.2
