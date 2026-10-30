@@ -20,11 +20,16 @@ if ! command -v "$GODOT" >/dev/null 2>&1; then
 	exit 127
 fi
 
+# Atualiza o cache de class_name (global_script_class_cache.cfg): sem isso uma
+# classe recém-criada falha com "Identifier not declared" em modo headless.
+"$GODOT" --headless --path . --editor --quit >/dev/null 2>&1 || true
+
 TESTS=(
 	scripts/tests/run_paperdoll_tests.gd
 	scripts/tests/run_sets_and_affixes_test.gd
 	scripts/tests/test_character_level_persistence.gd
 	scripts/tests/test_gear_visual_sync.gd
+	scripts/tests/test_quest_persistence.gd
 	scripts/tests/run_backend_and_version_tests.gd
 	scripts/tests/run_quest_and_ui_enhancements_test.gd
 	scripts/tests/run_polish_features_test.gd

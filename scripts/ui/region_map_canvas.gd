@@ -162,8 +162,12 @@ func _draw() -> void:
 			draw_string(ThemeDB.fallback_font, bp + Vector2(-40, -8), bname, HORIZONTAL_ALIGNMENT_CENTER, -1, 9, bcol)
 
 	# 6b. Círculo de Objetivo de Missão Ativa
-	if not active_q.is_empty() and not active_q.get("done", false) and active_q.get("target_pos", Vector2.ZERO) != Vector2.ZERO:
-		var q_world: Vector2 = active_q["target_pos"]
+	var q_target := Vector2.ZERO
+	if not active_q.is_empty():
+		var raw_target = active_q.get("target_pos", Vector2.ZERO)
+		q_target = raw_target if raw_target is Vector2 else SaveService.to_vector2(raw_target)
+	if not active_q.is_empty() and not active_q.get("done", false) and q_target != Vector2.ZERO:
+		var q_world: Vector2 = q_target
 		var q_map: Vector2 = world_to_map(q_world)
 		var q_rad_px = 18.0
 		var pulse = (sin(Time.get_ticks_msec() / 180.0) + 1.0) * 0.5

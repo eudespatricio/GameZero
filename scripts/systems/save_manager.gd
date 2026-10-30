@@ -1,4 +1,5 @@
 extends Node
+class_name SaveService
 ## Gerenciador de Serialização e Persistência do GameZero.
 ##
 ## Converte o estado em tempo de execução de CharacterStats em payloads
@@ -100,7 +101,7 @@ func serialize_stats(stats: CharacterStatsClass) -> Dictionary:
 		"ritual_awakened": stats.ritual_awakened,
 		"equipped_gear": stats.equipped_gear.duplicate(true),
 		"bag": stats.bag.duplicate(true),
-		"quests": stats.quests.duplicate(true),
+		"quests": _quests_payload(stats.quests),
 		"timestamp": Time.get_datetime_string_from_system()
 	}
 
@@ -156,12 +157,41 @@ func deserialize_stats(stats: CharacterStatsClass, data: Dictionary) -> void:
 				q["claimed"] = q.get("claimed", false) or q.get("status") == "claimed"
 				q["goal"] = goal
 				q["progress"] = prog
+				# Saves antigos gravavam Vector2 como texto:
+				# sem isso, o minimapa comparava String com Vector2 e quebrava.
+				q["target_pos"] = to_vector2(q.get("target_pos", Vector2.ZERO))
 				if not q.has("title"):
 					q["title"] = qid
 
 	stats.recalculate_stats()
 	stats.bag_changed.emit()
 	stats.stats_changed.emit()
+
+## Converte qualquer representação de posição vinda do JSON em Vector2.
+## Aceita Vector2, [x, y], {"x":..,"y":..} e a string legada "(x, y)".
+static func to_vector2(value) -> Vector2:
+	if value is Vector2:
+		return value
+	if value is Array and value.size() >= 2:
+		return Vector2(float(value[0]), float(value[1]))
+	if value is Dictionary:
+		return Vector2(float(value.get("x", 0.0)), float(value.get("y", 0.0)))
+	if value is String:
+		var clean := (value as String).strip_edges().trim_prefix("(").trim_suffix(")")
+		var parts := clean.split(",")
+		if parts.size() >= 2:
+			return Vector2(float(parts[0].strip_edges()), float(parts[1].strip_edges()))
+	return Vector2.ZERO
+
+## Prepara as missões para serialização (Vector2 -> [x, y]).
+func _quests_payload(quests: Dictionary) -> Dictionary:
+	var out: Dictionary = quests.duplicate(true)
+	for qid in out.keys():
+		var q = out[qid]
+		if q is Dictionary:
+			var pos := to_vector2(q.get("target_pos", Vector2.ZERO))
+			q["target_pos"] = [pos.x, pos.y]
+	return out
 
 ## Ponto único de migração de saves antigos.
 func _migrate(data: Dictionary) -> Dictionary:

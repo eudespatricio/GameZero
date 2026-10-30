@@ -117,8 +117,15 @@ func _draw() -> void:
 			draw_string(ThemeDB.fallback_font, center + rel_npc + Vector2(-3, 3), npc["icon"], HORIZONTAL_ALIGNMENT_CENTER, -1, 8, Color.WHITE)
 
 	# --- MARCADOR DE OBJETIVO DE MISSÃO (ÁREA / ALVO) ---
-	if not active_q.is_empty() and not active_q.get("done", false) and active_q.get("target_pos", Vector2.ZERO) != Vector2.ZERO:
-		var q_pos: Vector2 = active_q["target_pos"]
+	var q_target := Vector2.ZERO
+	if not active_q.is_empty():
+		var raw_target = active_q.get("target_pos", Vector2.ZERO)
+		if raw_target is Vector2:
+			q_target = raw_target
+		else:
+			q_target = SaveService.to_vector2(raw_target)
+	if not active_q.is_empty() and not active_q.get("done", false) and q_target != Vector2.ZERO:
+		var q_pos: Vector2 = q_target
 		var rel_q = (q_pos - Vector2(p_pos.x, p_pos.z)) * world_to_map_scale
 		var q_col := Color(1.0, 0.85, 0.25)
 		if rel_q.length() <= radar_radius - 8.0:
