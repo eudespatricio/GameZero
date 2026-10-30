@@ -43,6 +43,11 @@ var _growl_cd: float = 0.0
 var _limbs: Dictionary = {}
 var audio_player: AudioStreamPlayer3D = null
 
+# --- RIG (modelos CC0 com AnimationPlayer) ---
+var _anim: AnimationPlayer = null
+var _anim_map: Dictionary = {}
+var _anim_current: String = ""
+
 # --- SISTEMA DE GRAU DE DIFICULDADE (DIABLO IV TIERS) ---
 enum MobDifficultyTier { NORMAL, CHAMPION, ELITE, MINIBOSS, WORLD_BOSS }
 var difficulty_tier: MobDifficultyTier = MobDifficultyTier.NORMAL
@@ -232,6 +237,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = 0.0
 
 	move_and_slide()
+	_update_locomotion_anim(Vector2(velocity.x, velocity.z).length())
 
 func _get_attack_sfx() -> String:
 	var arch: Dictionary = MobsDatabase.get_all().get(archetype_id, {})
@@ -308,6 +314,7 @@ func _play_aggro_sound() -> void:
 
 func _perform_attack() -> void:
 	attack_timer.start()
+	_play_rig_clip("attack")
 	var atk_sfx := _get_attack_sfx()
 	# Pitch contido: acima de ~1.1 um impacto curto vira "bip" de desenho animado
 	GameAudio.mob(get_tree(), atk_sfx, global_position, -1.0, clamp(1.05 - model_scale * 0.06, 0.88, 1.06))
@@ -560,6 +567,7 @@ func configure(arch_id: String, lvl: int) -> void:
 		_pivot = model
 		model.scale = Vector3.ONE * model_scale
 		_cache_model_limbs(model)
+		_setup_animations(model)
 
 	# Sistema de Tiers de Dificuldade Diablo IV
 	if arch["kind"] == "world_boss":
@@ -617,6 +625,64 @@ func configure(arch_id: String, lvl: int) -> void:
 	_apply_visibility_culling(visual_root, max_vis)
 	_update_label()
 
+## Liga o rig do modelo (se houver) e mapeia os clipes por comportamento.
+func _setup_animations(model: Node) -> void:
+	_anim = null
+	_anim_map.clear()
+	_anim_current = ""
+	if model == null:
+		return
+	for n in model.find_children("*", "AnimationPlayer", true, false):
+		_anim = n as AnimationPlayer
+		break
+	if _anim == null:
+		return
+	for clip in _anim.get_animation_list():
+		var low := clip.to_lower()
+		if low.contains("idle") or low.contains("survey"):
+			_anim_map["idle"] = clip
+		elif low.contains("walk"):
+			_anim_map["walk"] = clip
+		elif low.contains("run") or low.contains("sprint"):
+			_anim_map["run"] = clip
+		elif low.contains("attack") and not _anim_map.has("attack"):
+			_anim_map["attack"] = clip
+		elif (low.contains("death") or low.contains("die")) and not _anim_map.has("death"):
+			_anim_map["death"] = clip
+	if _anim_map.has("idle"):
+		_anim.play(_anim_map["idle"])
+		_anim_current = "idle"
+
+## Troca o clipe conforme a velocidade; ajusta o playback ao ritmo do passo.
+func _update_locomotion_anim(speed: float) -> void:
+	if _anim == null or current_state == State.DEAD:
+		return
+	var want := "idle"
+	if speed > move_speed * 1.15:
+		want = "run"
+	elif speed > 0.4:
+		want = "walk"
+	if want != _anim_current:
+		if not _anim_map.has(want):
+			want = "walk" if _anim_map.has("walk") else "idle"
+		if _anim_map.has(want):
+			_anim.play(_anim_map[want])
+			_anim_current = want
+	if want == "walk":
+		_anim.speed_scale = clampf(speed / maxf(move_speed * 0.55, 0.1), 0.6, 1.5)
+	elif want == "run":
+		_anim.speed_scale = clampf(speed / maxf(move_speed, 0.1), 0.7, 1.4)
+	else:
+		_anim.speed_scale = 1.0
+
+func _play_rig_clip(key: String) -> bool:
+	if _anim == null or not _anim_map.has(key):
+		return false
+	if _anim_current != key:
+		_anim.play(_anim_map[key])
+		_anim_current = key
+	return true
+
 func _apply_visibility_culling(node: Node, max_dist: float) -> void:
 	if not node:
 		return
@@ -642,8 +708,9 @@ func _tint_model(node: Node, tint: Color) -> void:
 						mat.albedo_color = Color(mat.albedo_color.r * soft_tint.r, mat.albedo_color.g * soft_tint.g, mat.albedo_color.b * soft_tint.b, mat.albedo_color.a)
 					# Oclusão ambiente assada no Blender vem em COLOR_0
 					mat.vertex_color_use_as_albedo = true
-					# Grão de superfície (triplanar, sem UV)
-					MaterialDetail.apply(mat, 2.6, 0.85)
+					# Grão triplanar só em quem NÃO tem textura própria (senão apagaria o atlas)
+					if mat.albedo_texture == null:
+						MaterialDetail.apply(mat, 2.6, 0.85)
 					mi.set_surface_override_material(i, mat)
 	for c in node.get_children():
 		_tint_model(c, tint)
@@ -691,6 +758,8 @@ func take_damage(amount: float, is_crit: bool = false) -> void:
 
 func _die() -> void:
 	current_state = State.DEAD
+	if not _play_rig_clip("death"):
+		pass
 	GameAudio.mob(get_tree(), "mob_death", global_position, 0.0, clamp(1.15 - model_scale * 0.18, 0.7, 1.2))
 	enemy_died.emit(mob_name, xp_reward, gold_reward)
 

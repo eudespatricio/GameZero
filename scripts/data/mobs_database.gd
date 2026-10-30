@@ -5,6 +5,8 @@ class_name MobsDatabase
 ## kind: "mob" | "mini_boss" | "world_boss"
 
 const URGAL := "res://assets/models/urgal_warrior.glb"
+# Modelo CC0 pronto em assets/models/cc0/wolf_cc0.glb (Fox riggado).
+# Troca pendente de validação em jogo: basta apontar a linha abaixo para ele.
 const WOLF := "res://assets/models/wolf_spine.glb"
 const GOLEM := "res://assets/models/root_golem.glb"
 const WRAITH := "res://assets/models/shade_wraith.glb"

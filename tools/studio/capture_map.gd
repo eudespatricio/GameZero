@@ -100,6 +100,9 @@ func _initialize() -> void:
 		var aid := mode.substr(4)
 		for e in get_nodes_in_group("enemies"):
 			if e.get("archetype_id") == aid:
+				# camps distantes nascem dormentes (visual escondido): acorda para a foto
+				if e.has_method("set_dormant"):
+					e.set_dormant(false)
 				var p: Vector3 = e.global_position
 				var sc: float = e.model_scale
 				var pl = map.get_node("Player")
