@@ -639,6 +639,10 @@ func _tint_model(node: Node, tint: Color) -> void:
 					# Não tinge superfícies emissivas (olhos, runas, veios)
 					if not mat.emission_enabled:
 						mat.albedo_color = Color(mat.albedo_color.r * soft_tint.r, mat.albedo_color.g * soft_tint.g, mat.albedo_color.b * soft_tint.b, mat.albedo_color.a)
+					# Oclusão ambiente assada no Blender vem em COLOR_0
+					mat.vertex_color_use_as_albedo = true
+					# Grão de superfície (triplanar, sem UV)
+					MaterialDetail.apply(mat, 2.6, 0.85)
 					mi.set_surface_override_material(i, mat)
 	for c in node.get_children():
 		_tint_model(c, tint)

@@ -159,6 +159,12 @@ func _ready() -> void:
 	# Sincronizar visibilidade inicial de equipamentos
 	update_equipment_visuals()
 
+	# Oclusão ambiente assada no Blender (COLOR_0): aplica em todas as malhas
+	_apply_vertex_shading(body_mesh)
+	_apply_vertex_shading(wings_root)
+	_apply_vertex_shading(dragon_pet)
+	_apply_vertex_shading(dragon_mount)
+
 	# Atualizar arma com o Glow do refino inicial (+11)
 	_update_weapon_glow()
 
@@ -196,6 +202,26 @@ func _unhandled_input(event: InputEvent) -> void:
 		toggle_dragon_mount()
 	elif event.is_action_pressed("cycle_character"):
 		cycle_next_character()
+
+## Liga o uso das vertex colors em cada superfície (sombreamento assado no modelo).
+func _apply_vertex_shading(root_node: Node) -> void:
+	if root_node == null:
+		return
+	var stack: Array[Node] = [root_node]
+	while not stack.is_empty():
+		var node: Node = stack.pop_back()
+		if node is MeshInstance3D:
+			var mi := node as MeshInstance3D
+			if mi.mesh:
+				for i in mi.mesh.get_surface_count():
+					var base := mi.get_active_material(i)
+					if base is StandardMaterial3D and not (base as StandardMaterial3D).vertex_color_use_as_albedo:
+						var mat := (base as StandardMaterial3D).duplicate() as StandardMaterial3D
+						mat.vertex_color_use_as_albedo = true
+						MaterialDetail.apply(mat, 3.2, 0.7)
+						mi.set_surface_override_material(i, mat)
+		for child in node.get_children():
+			stack.push_back(child)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_PREDELETE:
