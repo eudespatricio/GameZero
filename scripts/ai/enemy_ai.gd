@@ -309,7 +309,8 @@ func _play_aggro_sound() -> void:
 func _perform_attack() -> void:
 	attack_timer.start()
 	var atk_sfx := _get_attack_sfx()
-	GameAudio.mob(get_tree(), atk_sfx, global_position, 0.0, clamp(1.15 - model_scale * 0.12, 0.75, 1.25))
+	# Pitch contido: acima de ~1.1 um impacto curto vira "bip" de desenho animado
+	GameAudio.mob(get_tree(), atk_sfx, global_position, -1.0, clamp(1.05 - model_scale * 0.06, 0.88, 1.06))
 	# Animação procedural: recua (anticipation), investe e retorna
 	var tween = create_tween()
 	tween.tween_property(self, "_atk_lean", -0.32, 0.16).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)

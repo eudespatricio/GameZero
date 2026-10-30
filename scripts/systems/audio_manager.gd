@@ -67,10 +67,10 @@ func _setup_buses() -> void:
 	var sfx := AudioServer.get_bus_index("SFX")
 	if AudioServer.get_bus_effect_count(sfx) == 0:
 		var comp := AudioEffectCompressor.new()
-		comp.threshold = -14.0
-		comp.ratio = 3.0
-		comp.attack_us = 15.0
-		comp.release_ms = 140.0
+		comp.threshold = -20.0
+		comp.ratio = 2.5
+		comp.attack_us = 25.0
+		comp.release_ms = 200.0
 		AudioServer.add_bus_effect(sfx, comp)
 	AudioServer.set_bus_volume_db(sfx, 0.0)
 
@@ -125,9 +125,9 @@ func play_sfx(sfx_name: String, volume_db: float = 0.0, pitch: float = 1.0, pitc
 	return true
 
 ## Toca um efeito 3D no ponto do mundo (monstros, portais). Descarta se houver muitos simultâneos.
-func play_sfx_3d(sfx_name: String, pos: Vector3, volume_db: float = 0.0, max_dist: float = 35.0, pitch: float = 1.0, pitch_var: float = 0.12) -> void:
+func play_sfx_3d(sfx_name: String, pos: Vector3, volume_db: float = 0.0, max_dist: float = 35.0, pitch: float = 1.0, pitch_var: float = 0.04) -> void:
 	var list := _variants(sfx_name)
-	if list.is_empty() or _active_3d >= 24:
+	if list.is_empty() or _active_3d >= 12:
 		return
 	if not is_inside_tree():
 		return

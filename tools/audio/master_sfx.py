@@ -91,6 +91,7 @@ def master_one(name, dry_run):
     if dry_run:
         return (name, rms, gain, f"simulado ({label} {target:.0f})")
 
+    # Backup só para o --restore; a masterização lê e grava o arquivo atual.
     backup = os.path.join(BACKUP_DIR, name)
     if not os.path.exists(backup):
         shutil.copy2(path, backup)
@@ -98,7 +99,7 @@ def master_one(name, dry_run):
     fd, tmp = tempfile.mkstemp(suffix=".ogg", dir=SFX_DIR)
     os.close(fd)
     proc = subprocess.run(
-        ["ffmpeg", "-hide_banner", "-nostats", "-y", "-i", backup,
+        ["ffmpeg", "-hide_banner", "-nostats", "-y", "-i", path,
          "-af", f"highpass=f=30,volume={gain:.2f}dB",
          "-c:a", "libvorbis", "-q:a", OGG_QUALITY, tmp],
         capture_output=True, text=True,
@@ -109,6 +110,24 @@ def master_one(name, dry_run):
 
     os.replace(tmp, path)
     new_rms, new_peak = measure(path)
+
+    # Se a codificação empurrou o pico acima do teto, corrige o excedente.
+    if new_peak is not None and new_peak > TRUE_PEAK_CEILING_DB:
+        fix = TRUE_PEAK_CEILING_DB - new_peak - 0.2
+        fd2, tmp2 = tempfile.mkstemp(suffix=".ogg", dir=SFX_DIR)
+        os.close(fd2)
+        p2 = subprocess.run(
+            ["ffmpeg", "-hide_banner", "-nostats", "-y", "-i", path,
+             "-af", f"volume={fix:.2f}dB",
+             "-c:a", "libvorbis", "-q:a", OGG_QUALITY, tmp2],
+            capture_output=True, text=True,
+        )
+        if p2.returncode == 0:
+            os.replace(tmp2, path)
+            new_rms, new_peak = measure(path)
+        else:
+            os.unlink(tmp2)
+
     return (name, rms, gain, f"ok -> {new_rms:.1f} dB RMS / {new_peak:.1f} dBTP")
 
 
