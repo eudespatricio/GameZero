@@ -103,3 +103,5 @@ para CI.
   (`assets/fonts/OFL-*.txt`).
 - Áudio e modelos 3D gerados proceduralmente por scripts em `tools/`.
 - Código do jogo: **MIT** — veja [LICENSE](LICENSE).
+- Universo, personagens e lugares de Alagaësia são criação de **Christopher Paolini**
+  e pertencem aos seus titulares. A licença cobre o software, não a obra original.
