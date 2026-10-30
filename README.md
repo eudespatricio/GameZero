@@ -102,3 +102,4 @@ para CI.
 - Fontes: **Montserrat** e **Noto Emoji**, ambas SIL Open Font License 1.1
   (`assets/fonts/OFL-*.txt`).
 - Áudio e modelos 3D gerados proceduralmente por scripts em `tools/`.
+- Código do jogo: **MIT** — veja [LICENSE](LICENSE).
