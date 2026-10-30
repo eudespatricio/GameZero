@@ -59,6 +59,11 @@ var _step_idx: int = 0
 var _flap_timer: float = 0.0
 var _map_builder: Node
 
+# --- RIG (modelo CC0 com AnimationPlayer) ---
+var _anim: AnimationPlayer = null
+var _anim_map: Dictionary = {}
+var _anim_current: String = ""
+
 # --- FÍSICA PROCEDURAL (INÉRCIA, LEAN E BOBBING) ---
 var step_cycle: float = 0.0
 var current_bank_angle: float = 0.0
@@ -164,6 +169,7 @@ func _ready() -> void:
 	_apply_vertex_shading(wings_root)
 	_apply_vertex_shading(dragon_pet)
 	_apply_vertex_shading(dragon_mount)
+	_setup_animations(body_mesh)
 
 	# Atualizar arma com o Glow do refino inicial (+11)
 	_update_weapon_glow()
@@ -202,6 +208,60 @@ func _unhandled_input(event: InputEvent) -> void:
 		toggle_dragon_mount()
 	elif event.is_action_pressed("cycle_character"):
 		cycle_next_character()
+
+## Liga o rig do herói e mapeia os clipes de locomoção/ataque.
+func _setup_animations(model: Node) -> void:
+	_anim = null
+	_anim_map.clear()
+	_anim_current = ""
+	if model == null:
+		return
+	for n in model.find_children("*", "AnimationPlayer", true, false):
+		_anim = n as AnimationPlayer
+		break
+	if _anim == null:
+		return
+	for clip in _anim.get_animation_list():
+		var low := clip.to_lower()
+		if low.contains("idle") and not _anim_map.has("idle"):
+			_anim_map["idle"] = clip
+		elif low.contains("walk") and not _anim_map.has("walk"):
+			_anim_map["walk"] = clip
+		elif (low.contains("run") or low.contains("sprint")) and not _anim_map.has("run"):
+			_anim_map["run"] = clip
+		elif low.contains("attack") and not _anim_map.has("attack"):
+			_anim_map["attack"] = clip
+	if _anim_map.has("idle"):
+		_anim.play(_anim_map["idle"])
+		_anim_current = "idle"
+
+## Alterna idle/walk/run conforme a velocidade e toca o golpe no ataque.
+func _update_rig_animation(speed: float) -> void:
+	if _anim == null or _is_dead:
+		return
+	var want := "idle"
+	if speed > run_speed * 0.75:
+		want = "run"
+	elif speed > 0.45:
+		want = "walk"
+	if want != _anim_current:
+		if not _anim_map.has(want):
+			want = "walk" if _anim_map.has("walk") else "idle"
+		if _anim_map.has(want):
+			_anim.play(_anim_map[want])
+			_anim_current = want
+	if want == "walk":
+		_anim.speed_scale = clampf(speed / maxf(walk_speed * 0.6, 0.1), 0.7, 1.5)
+	elif want == "run":
+		_anim.speed_scale = clampf(speed / maxf(run_speed * 0.9, 0.1), 0.8, 1.4)
+	else:
+		_anim.speed_scale = 1.0
+
+## Toca o clipe de ataque, se o modelo tiver.
+func _play_attack_anim() -> void:
+	if _anim and _anim_map.has("attack"):
+		_anim.play(_anim_map["attack"], 0.05)
+		_anim_current = "attack"
 
 ## Liga o uso das vertex colors em cada superfície (sombreamento assado no modelo).
 func _apply_vertex_shading(root_node: Node) -> void:
@@ -323,6 +383,7 @@ func perform_attack(target_mob = null) -> void:
 	# Efeito sonoro do corte da lâmina e esforço do herói
 	GameAudio.play_slash(get_tree())
 	GameAudio.play_player_exert(get_tree(), 2 if combo_step == 3 else 1)
+	_play_attack_anim()
 
 	# Vira para o alvo (monstro clicado) ou para o cursor e projeta o arco de lâmina
 	var atk_dir := get_aim_dir()
@@ -831,6 +892,9 @@ func _physics_process(delta: float) -> void:
 
 	# 7. Pulsação Mística da Gedwëy Ignasia
 	_update_gedwey_ignasia()
+
+	# 7b. Rig do herói (modelos CC0): idle / walk / run conforme a velocidade
+	_update_rig_animation(planar_speed)
 
 	# 8. Animação Flutuante do Pet Companheiro
 	if dragon_pet:

@@ -91,6 +91,17 @@ def main():
     if removed:
         print(f">>> {removed} ação(ões) removida(s)")
 
+    # Garante que TODAS as texturas vão embutidas no GLB — sem isso o modelo
+    # sai branco no Godot (imagens importadas nem sempre vêm "packed").
+    packed = 0
+    for img in bpy.data.images:
+        if img.size[0] == 0:
+            continue
+        if not img.packed_file:
+            img.pack()
+            packed += 1
+    print(f">>> {packed} textura(s) empacotada(s), {len(bpy.data.images)} no total")
+
     acts = [x.name for x in bpy.data.actions]
     print(f">>> animações no arquivo: {len(acts)}")
 

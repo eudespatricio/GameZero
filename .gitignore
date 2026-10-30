@@ -37,3 +37,8 @@ assets/audio/sfx_raw/
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Modelos CC0 pré-processados: gerados por tools/studio/prep_all_cc0.py
+# (os originais ficam em assets/models/cc0/ apenas os já integrados)
+assets/models/cc0/skeleton_*.glb
+assets/models/cc0/hero_knight.glb
